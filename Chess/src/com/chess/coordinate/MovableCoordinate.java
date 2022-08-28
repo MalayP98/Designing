@@ -10,19 +10,19 @@ public class MovableCoordinate extends AbstractCoordinate {
         this(new CordinateElement(x), new CordinateElement(y));
     }
 
-    public MovableCoordinate moveForward() {
+    public MovableCoordinate moveRight() {
         return new MovableCoordinate(this.x, this.y.next());
     }
 
-    public MovableCoordinate moveBackward() {
+    public MovableCoordinate moveLeft() {
         return new MovableCoordinate(this.x, this.y.previous());
     }
 
-    public MovableCoordinate moveLeft() {
+    public MovableCoordinate moveBackward() {
         return new MovableCoordinate(this.x.previous(), this.y);
     }
 
-    public MovableCoordinate moveRight() {
+    public MovableCoordinate moveForward() {
         return new MovableCoordinate(this.x.next(), this.y);
     }
 
@@ -40,5 +40,10 @@ public class MovableCoordinate extends AbstractCoordinate {
 
     public MovableCoordinate moveSouthEast() {
         return this.moveBackward().moveRight();
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x.getValue() + ", " + y.getValue() + ")";
     }
 }

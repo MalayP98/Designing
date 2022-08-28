@@ -34,14 +34,14 @@ public class BoardInitiator {
         for (int i = 1; i <= colCount; i++) {
             board[2][i] = pieceFactory.createPiece(new MovableCoordinate(2, i), PieceType.PAWN,
                     PieceColor.WHITE);
-            board[7][i] = pieceFactory.createPiece(new MovableCoordinate(7, i), PieceType.PAWN,
+            board[7][i] = pieceFactory.createPiece(new MovableCoordinate(2, i), PieceType.PAWN,
                     PieceColor.BLACK);
         }
         for (Map.Entry<Integer, PieceType> set : POSITIONS.entrySet()) {
             board[1][set.getKey()] = pieceFactory.createPiece(
                     new MovableCoordinate(1, set.getKey()), set.getValue(), PieceColor.WHITE);
             board[8][set.getKey()] = pieceFactory.createPiece(
-                    new MovableCoordinate(8, set.getKey()), set.getValue(), PieceColor.BLACK);
+                    new MovableCoordinate(1, set.getKey()), set.getValue(), PieceColor.BLACK);
         }
         return board;
     }

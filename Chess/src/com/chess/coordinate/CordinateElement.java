@@ -18,10 +18,16 @@ public class CordinateElement {
     public CordinateElement next() {
         if (this.value == -1)
             return this;
+        else if (this.value + 1 > 8)
+            return new CordinateElement(-1);
         return new CordinateElement(this.value + 1);
     }
 
     public CordinateElement previous() {
+        if (this.value == -1)
+            return this;
+        else if (this.value - 1 < 1)
+            return new CordinateElement(-1);
         return new CordinateElement(this.value - 1);
     }
 }

@@ -1,8 +1,12 @@
 package com.chess.models;
 
+import java.util.List;
+import com.chess.board.BoardState;
+import com.chess.board.BoardStateObserver;
+import com.chess.pieces.Piece;
 import com.chess.pieces.PieceColor;
 
-public class Player {
+public class Player extends BoardStateObserver {
 
     private String name;
 
@@ -10,10 +14,14 @@ public class Player {
 
     private String sign;
 
-    public Player(String name, String sign, PieceColor color) {
+    private List<Piece> alivePieces;
+
+    public Player(String name, String sign, PieceColor color, BoardState boardState) {
+        super(boardState);
         this.name = name;
         this.sign = sign;
         this.color = color;
+        update();
     }
 
     public String getSign() {
@@ -26,5 +34,14 @@ public class Player {
 
     public PieceColor getColor() {
         return color;
+    }
+
+    public List<Piece> alivePieces() {
+        return alivePieces;
+    }
+
+    @Override
+    public void update() {
+        this.alivePieces = boardState.getAllPiecesWithColor(color);
     }
 }

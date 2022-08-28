@@ -9,16 +9,17 @@ import com.chess.moves.movingStrategies.KnightMovingStrategy;
 import com.chess.moves.movingStrategies.LeftMovingStrategy;
 import com.chess.moves.movingStrategies.NorthEastMovingStrategy;
 import com.chess.moves.movingStrategies.NorthWestMovingStrategy;
+import com.chess.moves.movingStrategies.PawnAttackingStrategy;
 import com.chess.moves.movingStrategies.RightMovingStrategy;
 import com.chess.moves.movingStrategies.SouthEastMovingStrategy;
 import com.chess.moves.movingStrategies.SouthWestMovingStrategy;
 import com.chess.pieces.PieceType;
 
-public class MovingStrategyFactory {
+public class MovingStrategyDistributor {
 
     private BoardState boardState;
 
-    public MovingStrategyFactory(BoardState boardState) {
+    public MovingStrategyDistributor(BoardState boardState) {
         this.boardState = boardState;
     }
 
@@ -46,6 +47,7 @@ public class MovingStrategyFactory {
                 break;
             case PAWN:
                 strategies.add(new ForwardMovingStrategy(boardState, 1));
+                strategies.add(new PawnAttackingStrategy(boardState, 1));
                 break;
             case QUEEN:
                 strategies.addAll(getMovingStrategyFor(PieceType.ROOK));

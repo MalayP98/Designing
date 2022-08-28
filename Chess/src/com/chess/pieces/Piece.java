@@ -45,8 +45,17 @@ public class Piece {
     public List<MovableCoordinate> getMoves() {
         List<MovableCoordinate> allMoves = new ArrayList<>();
         for (MovingStrategy movingStrategy : movingStrategies) {
-            allMoves.addAll(movingStrategy.getMoves(currentCoordinate));
+            allMoves.addAll(movingStrategy.getMoves(currentCoordinate, pieceColor));
         }
         return allMoves;
+    }
+
+    @Override
+    public String toString() {
+        return pieceType.name() + " is at location " + currentCoordinate.toString();
+    }
+
+    public String pieceName() {
+        return pieceType.name();
     }
 }

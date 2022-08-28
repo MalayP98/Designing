@@ -2,13 +2,13 @@ package com.chess.pieces;
 
 import com.chess.coordinate.MovableCoordinate;
 import com.chess.moves.MovingStrategy;
-import com.chess.moves.MovingStrategyFactory;
+import com.chess.moves.MovingStrategyDistributor;
 
 public class PieceFactory {
 
-    private MovingStrategyFactory movingStrategyFactory;
+    private MovingStrategyDistributor movingStrategyFactory;
 
-    public PieceFactory(MovingStrategyFactory movingStrategyFactory) {
+    public PieceFactory(MovingStrategyDistributor movingStrategyFactory) {
         this.movingStrategyFactory = movingStrategyFactory;
     }
 
