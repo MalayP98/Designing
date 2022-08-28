@@ -1,6 +1,5 @@
 package com.chess;
 
-import java.security.Policy;
 import java.util.Random;
 import java.util.Scanner;
 import com.chess.board.Board;
@@ -15,6 +14,10 @@ public class GameEngine {
     private final Random RANDOM = new Random();
 
     private final Scanner SCANNER = new Scanner(System.in);
+
+    private final String ANSI_RESET = "\u001B[0m";
+
+    private final String ANSI_RED = "\u001B[41m";
 
     private BoardState boardState;
 
@@ -56,37 +59,47 @@ public class GameEngine {
                 System.out.println("Invalid choice.");
                 continue;
             } else {
-                showAvaialableMoves(player.alivePieces().get(choice - 1));
-                System.out.println(GameConstants.WANT_TO_MOVE);
-                wantToMove = SCANNER.next().charAt(0);
-                if (wantToMove == 'N') {
-                    continue;
-                } else if (wantToMove == 'Y') {
-                    movePiece(player, choice);
-                    return;
-                } else
-                    throw new Exception("No a valid input.");
+                int totalMoves = showAvaialableMoves(player.alivePieces().get(choice - 1));
+                if (totalMoves > 0) {
+                    System.out.println(GameConstants.WANT_TO_MOVE);
+                    wantToMove = SCANNER.next().charAt(0);
+                    if (wantToMove == 'N') {
+                        continue;
+                    } else if (wantToMove == 'Y') {
+                        movePiece(player, choice);
+                        break;
+                    }
+                } else {
+                    System.out.println("No moves available for the selected piece!");
+                }
             }
         } while (wantToMove != 'Y');
+        System.out.println("\n");
     }
 
-    private void showAvaialableMoves(Piece piece) {
+    private int showAvaialableMoves(Piece piece) {
         System.out.println(String.format(GameConstants.POSSIBLE_MOVE, piece.pieceName()));
         int option = 1;
         System.out.print("[");
         for (MovableCoordinate coordinate : piece.getMoves()) {
-            System.out.print(option + ": " + coordinate.toString()
-                    + ((option < piece.getMoves().size()) ? " " : ""));
+            if (boardState.isAttack(coordinate, piece.getPieceColor())) {
+                System.out.print(ANSI_RED + option + ": " + coordinate.toString()
+                        + ((option < piece.getMoves().size()) ? " " : "" + ANSI_RESET));
+            } else {
+                System.out.print(option + ": " + coordinate.toString()
+                        + ((option < piece.getMoves().size()) ? " " : ""));
+            }
             option++;
         }
         System.out.println("]");
+        return piece.getMoves().size();
     }
 
-    private void movePiece(Player player, int choice) throws Exception {
+    private void movePiece(Player player, int choice) {
         System.out.println(GameConstants.CORDINATE_OPTION);
         int option = SCANNER.nextInt();
         if (option < 1 || option > player.alivePieces().get(choice - 1).getMoves().size()) {
-            throw new Exception("No such move available.");
+            System.out.println("No such move available.");
         } else {
             boardState.movePiece(player.alivePieces().get(choice - 1).getMoves().get(option - 1),
                     player.alivePieces().get(choice - 1).getCoordinate(), player.getColor());

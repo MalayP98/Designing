@@ -35,6 +35,13 @@ public class BoardState {
                 getPieceAtCoordinate(to).getPieceColor());
     }
 
+    public boolean isAttack(MovableCoordinate to, PieceColor color) {
+        if (color.equals(PieceColor.BLACK)) {
+            to = to.reversePerspective();
+        }
+        return PieceColor.areOpposite(getPieceAtCoordinate(to).getPieceColor(), color);
+    }
+
     public Piece getPieceAtCoordinate(MovableCoordinate coordinate) {
         Piece piece = board.getPiece(coordinate.getX().getValue(), coordinate.getY().getValue());
         if (piece == null)

@@ -5,7 +5,6 @@ import com.chess.pieces.PieceColor;
 import com.chess.pieces.PieceType;
 
 public interface GameConstants {
-
         public static Piece NULL_PIECE = new Piece(null, PieceType.EXTRA, PieceColor.NONE);
 
         public static String ENTER_NAME = "Enter name for ";
