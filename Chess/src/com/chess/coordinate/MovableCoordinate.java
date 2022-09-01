@@ -42,6 +42,10 @@ public class MovableCoordinate extends AbstractCoordinate {
         return this.moveBackward().moveRight();
     }
 
+    public Integer toInteger() {
+        return x.getValue() * 10 + y.getValue();
+    }
+
     @Override
     public String toString() {
         return "(" + x.getValue() + ", " + y.getValue() + ")";

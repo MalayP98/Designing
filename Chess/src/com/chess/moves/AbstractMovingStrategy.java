@@ -2,7 +2,7 @@ package com.chess.moves;
 
 import com.chess.board.BoardState;
 import com.chess.coordinate.MovableCoordinate;
-import com.chess.pieces.PieceColor;
+import com.chess.pieces.Piece;
 
 public abstract class AbstractMovingStrategy implements MovingStrategy {
 
@@ -15,10 +15,9 @@ public abstract class AbstractMovingStrategy implements MovingStrategy {
         this.STEP_CONSTRAINT = stepConstraint;
     }
 
-    public boolean isValidMove(MovableCoordinate from, MovableCoordinate to, PieceColor color) {
+    public boolean isValidMove(MovableCoordinate from, MovableCoordinate to) {
         if (to.isValid()) {
-            if (color.equals(PieceColor.BLACK)) {
-                from = from.reversePerspective();
+            if (boardState.getPieceAtCoordinate(from).isBlack()) {
                 to = to.reversePerspective();
             }
             return boardState.canMoveTo(to, from);

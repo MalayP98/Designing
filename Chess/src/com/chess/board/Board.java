@@ -1,5 +1,6 @@
 package com.chess.board;
 
+import com.chess.coordinate.MovableCoordinate;
 import com.chess.pieces.Piece;
 
 public class Board {
@@ -12,12 +13,12 @@ public class Board {
 
     public static int COLUMNS = -1;
 
-    private Piece[][] board;
+    private CellMap board;
 
     public Board() {
         Board.ROWS = DEFAULT_ROWS;
         Board.COLUMNS = DEFAULT_COLUMNS;
-        this.board = new Piece[ROWS + 1][COLUMNS + 1];
+        this.board = new CellMap();
     }
 
     public Board(int rows, int column) throws Exception {
@@ -26,27 +27,24 @@ public class Board {
         }
         Board.ROWS = rows;
         Board.COLUMNS = column;
-        this.board = new Piece[rows + 1][COLUMNS + 1];
+        this.board = new CellMap();
     }
 
-    public Piece[][] getBoard() {
-        return board;
-    }
+    public Piece getPiece(MovableCoordinate coordinate) {
 
-    public void setBoard(Piece[][] board) {
-        this.board = board;
-    }
-
-    public Piece getPiece(int x, int y) {
-        if (validRange(x) && validRange(y)) {
-            return board[x][y];
+        if (validRange(coordinate.getX().getValue()) && validRange(coordinate.getY().getValue())) {
+            return board.get(coordinate);
         }
         return null;
     }
 
-    public void setPiece(int x, int y, Piece piece) {
-        if (validRange(x) && validRange(y)) {
-            board[x][y] = piece;
+    public Piece getPiece(int x, int y) {
+        return getPiece(new MovableCoordinate(x, y));
+    }
+
+    public void setPiece(MovableCoordinate coordinate, Piece piece) {
+        if (validRange(coordinate.getX().getValue()) && validRange(coordinate.getY().getValue())) {
+            board.put(coordinate, piece);
         }
     }
 

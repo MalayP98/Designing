@@ -28,6 +28,8 @@ public class GameEngine {
         boardState = new BoardState(chessBoard);
         System.out.println(GameConstants.BOARD_READY);
         Player[] players = generatePlayers(boardState);
+        boardState.display();
+        System.out.println("\n\n");
         start(players[0], players[1], true);
     }
 
@@ -38,6 +40,7 @@ public class GameEngine {
             } else {
                 move(B);
             }
+            boardState.display();
             turn = !turn;
         }
     }
@@ -82,13 +85,16 @@ public class GameEngine {
         int option = 1;
         System.out.print("[");
         for (MovableCoordinate coordinate : piece.getMoves()) {
-            if (boardState.isAttack(coordinate, piece.getPieceColor())) {
+            if (boardState.isAttack(
+                    (piece.isBlack() ? coordinate.reversePerspective() : coordinate),
+                    piece.getActualCoordinate())) {
                 System.out.print(ANSI_RED + option + ": " + coordinate.toString()
-                        + ((option < piece.getMoves().size()) ? " " : "" + ANSI_RESET));
+                        + ((option < piece.getMoves().size()) ? " " : ""));
             } else {
                 System.out.print(option + ": " + coordinate.toString()
                         + ((option < piece.getMoves().size()) ? " " : ""));
             }
+            System.out.print(ANSI_RESET);
             option++;
         }
         System.out.println("]");
