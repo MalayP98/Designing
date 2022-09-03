@@ -5,7 +5,6 @@ import java.util.List;
 import com.chess.board.BoardState;
 import com.chess.coordinate.MovableCoordinate;
 import com.chess.moves.AbstractMovingStrategy;
-import com.chess.pieces.PieceColor;
 
 public class PawnAttackingStrategy extends AbstractMovingStrategy {
 
@@ -14,30 +13,24 @@ public class PawnAttackingStrategy extends AbstractMovingStrategy {
     }
 
     @Override
-    public List<MovableCoordinate> getMoves(MovableCoordinate currentCoordinate, PieceColor color) {
+    public List<MovableCoordinate> getMoves(MovableCoordinate currentCoordinate,
+            MovableCoordinate actualCoordinate) {
         List<MovableCoordinate> moves = new ArrayList<>();
         MovableCoordinate leftDiagonal = currentCoordinate.moveNorthWest();
         MovableCoordinate rightDiagonal = currentCoordinate.moveNorthEast();
-        if (color.equals(PieceColor.BLACK)) {
-            if (leftDiagonal.isValid() && PieceColor.areOpposite(boardState
-                    .getPieceAtCoordinate(leftDiagonal.reversePerspective()).getPieceColor(),
-                    color)) {
-                moves.add(leftDiagonal);
-            }
-            if (rightDiagonal.isValid() && PieceColor.areOpposite(boardState
-                    .getPieceAtCoordinate(rightDiagonal.reversePerspective()).getPieceColor(),
-                    color)) {
-                moves.add(rightDiagonal);
-            }
-        } else {
-            if (leftDiagonal.isValid() && PieceColor.areOpposite(
-                    boardState.getPieceAtCoordinate(leftDiagonal).getPieceColor(), color)) {
-                moves.add(leftDiagonal);
-            }
-            if (rightDiagonal.isValid() && PieceColor.areOpposite(
-                    boardState.getPieceAtCoordinate(rightDiagonal).getPieceColor(), color)) {
-                moves.add(rightDiagonal);
-            }
+        if (boardState.getPieceAtCoordinate(actualCoordinate).isBlack()) {
+            leftDiagonal = leftDiagonal.reversePerspective();
+            rightDiagonal = rightDiagonal.reversePerspective();
+        }
+        if (boardState.isAttack(leftDiagonal, actualCoordinate)) {
+            moves.add((boardState.getPieceAtCoordinate(actualCoordinate).isBlack())
+                    ? leftDiagonal.reversePerspective()
+                    : leftDiagonal);
+        }
+        if (boardState.isAttack(rightDiagonal, actualCoordinate)) {
+            moves.add((boardState.getPieceAtCoordinate(actualCoordinate).isBlack())
+                    ? rightDiagonal.reversePerspective()
+                    : rightDiagonal);
         }
         return moves;
     }

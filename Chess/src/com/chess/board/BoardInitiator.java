@@ -3,7 +3,6 @@ package com.chess.board;
 import java.util.HashMap;
 import java.util.Map;
 import com.chess.coordinate.MovableCoordinate;
-import com.chess.pieces.Piece;
 import com.chess.pieces.PieceColor;
 import com.chess.pieces.PieceFactory;
 import com.chess.pieces.PieceType;
@@ -12,8 +11,11 @@ public class BoardInitiator {
 
     private PieceFactory pieceFactory;
 
-    public BoardInitiator(PieceFactory pieceFactory) {
+    private Board board;
+
+    public BoardInitiator(PieceFactory pieceFactory, Board board) {
         this.pieceFactory = pieceFactory;
+        this.board = board;
     }
 
     private final Map<Integer, PieceType> POSITIONS = new HashMap<>() {
@@ -29,20 +31,20 @@ public class BoardInitiator {
         }
     };
 
-    public Piece[][] initiate(int rowCount, int colCount) {
-        Piece[][] board = new Piece[rowCount + 1][colCount + 1];
-        for (int i = 1; i <= colCount; i++) {
-            board[2][i] = pieceFactory.createPiece(new MovableCoordinate(2, i), PieceType.PAWN,
-                    PieceColor.WHITE);
-            board[7][i] = pieceFactory.createPiece(new MovableCoordinate(2, i), PieceType.PAWN,
-                    PieceColor.BLACK);
+    public void initiate(int rowCount, int colCount) {
+        for (int i = 1; i <= 8; i++) {
+            MovableCoordinate position = new MovableCoordinate(2, i);
+            board.setPiece(position,
+                    pieceFactory.createPiece(position, PieceType.PAWN, PieceColor.WHITE));
+            board.setPiece(position.reversePerspective(),
+                    pieceFactory.createPiece(position, PieceType.PAWN, PieceColor.BLACK));
         }
         for (Map.Entry<Integer, PieceType> set : POSITIONS.entrySet()) {
-            board[1][set.getKey()] = pieceFactory.createPiece(
-                    new MovableCoordinate(1, set.getKey()), set.getValue(), PieceColor.WHITE);
-            board[8][set.getKey()] = pieceFactory.createPiece(
-                    new MovableCoordinate(1, set.getKey()), set.getValue(), PieceColor.BLACK);
+            MovableCoordinate position = new MovableCoordinate(1, set.getKey());
+            board.setPiece(position,
+                    pieceFactory.createPiece(position, set.getValue(), PieceColor.WHITE));
+            board.setPiece(position.reversePerspective(),
+                    pieceFactory.createPiece(position, set.getValue(), PieceColor.BLACK));
         }
-        return board;
     }
 }

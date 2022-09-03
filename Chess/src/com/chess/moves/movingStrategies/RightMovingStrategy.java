@@ -14,13 +14,14 @@ public class RightMovingStrategy extends AbstractMovingStrategy {
     }
 
     @Override
-    public List<MovableCoordinate> getMoves(MovableCoordinate currentCoordinate, PieceColor color) {
+    public List<MovableCoordinate> getMoves(MovableCoordinate currentCoordinate,
+            MovableCoordinate actualCoordinate) {
         List<MovableCoordinate> moves = new ArrayList<>();
         MovableCoordinate nextCoordinate = null;
         for (int step = 1; step <= STEP_CONSTRAINT; step++) {
             nextCoordinate = (moves.isEmpty()) ? currentCoordinate.moveRight()
                     : moves.get(moves.size() - 1).moveRight();
-            if (isValidMove(currentCoordinate, nextCoordinate, color)) {
+            if (isValidMove(actualCoordinate, nextCoordinate)) {
                 moves.add(nextCoordinate);
             }
         }
