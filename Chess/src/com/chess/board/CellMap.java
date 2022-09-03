@@ -1,7 +1,6 @@
 package com.chess.board;
 
 import java.util.HashMap;
-import javax.swing.text.html.HTML.Tag;
 import com.chess.coordinate.MovableCoordinate;
 import com.chess.pieces.Piece;
 
