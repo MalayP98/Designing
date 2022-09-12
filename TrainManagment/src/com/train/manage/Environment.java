@@ -1,17 +1,33 @@
 package com.train.manage;
 
-import java.util.List;
-import java.util.Scanner;
+import static com.train.manage.Constants.SCANNER;
 import com.train.manage.initiators.StationInitiator;
 import com.train.manage.initiators.TrackInitiator;
+import com.train.manage.menus.AdminMenu;
+import com.train.manage.menus.EngineMenu;
+import com.train.manage.menus.EntryMenu;
+import com.train.manage.menus.TrainMenu;
+import com.train.manage.repository.EngineRepository;
+import com.train.manage.service.AuthService;
+import com.train.manage.service.EngineService;
 
 public class Environment {
+
+    private EntryMenu entryMenu;
+
+    private AdminMenu adminMenu;
+
+    private EngineService engineService;
 
     private static Environment INSTANCE = null;
 
     private static boolean created = false;
 
-    private final String ADMIN_PASSWORD = "admin";
+    private Environment() {
+        this.entryMenu = new EntryMenu(new AuthService());
+        this.adminMenu = new AdminMenu(new TrainMenu(), new EngineMenu());
+        this.engineService = new EngineService();
+    }
 
     public static Environment getInstance() {
         if (INSTANCE == null) {
@@ -26,43 +42,22 @@ public class Environment {
         }
         System.out.println("Creating Environment.");
         StationInitiator.createStations(stationCount);
-        TrackInitiator.createTracks(getStations());
+        TrackInitiator.createTracks(StationInitiator.getStations());
+        engineService.addEngine(Constants.DEFAULT_ENGINE);
         System.out.println("Environment created.");
         created = true;
     }
 
-    public List<Station> getStations() {
-        return StationInitiator.getStations();
-    }
-
-    public List<List<Integer>> getTracks() {
-        return TrackInitiator.getTrack();
-    }
-
     public void start() {
-        Scanner sc = new Scanner(System.in);
-        boolean isAdmin = false;
-        System.out.println("Are you a admin? Press 'Y' for Yes and 'N' for No.");
-        String input = sc.nextLine();
-        if (input.equals("Y")) {
-            int tries = 3;
-            while (tries != 0) {
-                if (tries == 1) {
-                    System.out.println("This is your last try!");
-                }
-                System.out.println("Enter password: ");
-                input = sc.nextLine();
-                if (ADMIN_PASSWORD.equals(input)) {
-                    isAdmin = true;
-                    break;
-                }
-                tries--;
+        int input;
+        while (true) {
+            System.out.println("Enter -1 to exit app or 1 to continue.");
+            input = SCANNER.nextInt();
+            if (input == -1)
+                return;
+            if (entryMenu.authenticate()) {
+                adminMenu.displayMenu();
             }
-        }
-        if (isAdmin) {
-            System.out.println("You are now logged in as ADMIN.");
-        } else {
-            System.out.println("You are logged in as passenger.");
         }
     }
 }

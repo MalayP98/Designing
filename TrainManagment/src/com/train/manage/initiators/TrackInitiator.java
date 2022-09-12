@@ -7,7 +7,7 @@ import com.train.manage.Util;
 
 public class TrackInitiator {
 
-    private static List<List<Integer>> TRACKS = new ArrayList<>();
+    private static final List<List<Integer>> TRACKS = new ArrayList<>();
 
     private static Boolean created = false;
 
@@ -39,10 +39,8 @@ public class TrackInitiator {
     }
 
     private static void addTracks(int parentStationIndex, List<Station> stations) {
-        int stationCount = stations.size();
-        int tracks = Util.getRandomNumber(1, stationCount);
+        int tracks = Util.getRandomNumber(1, Math.min(3, stations.size()));
         while (tracks != 0) {
-
             TRACKS.get(parentStationIndex).add(
                     destinationTracks(parentStationIndex, stations).getId() - 1,
                     Util.getRandomNumber(1, 10));
@@ -65,5 +63,11 @@ public class TrackInitiator {
             }
             System.out.println();
         }
+    }
+
+    public static Integer getCellValue(int x, int y) {
+        if (x >= TRACKS.size() || x < 0 || y >= TRACKS.size() || y < 0)
+            return -1;
+        return TRACKS.get(x).get(y);
     }
 }

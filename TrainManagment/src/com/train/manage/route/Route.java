@@ -5,25 +5,20 @@ import com.train.manage.Station;
 
 public class Route {
 
-    private Station source;
-
-    private Station destination;
-
     private List<Station> route;
 
     private int currentStation = 0;
 
-    public Route(Station source, Station destination) {
-        this.source = source;
-        this.destination = destination;
+    public Route(List<Station> route) {
+        this.route = route;
     }
 
     public Station getSource() {
-        return source;
+        return route.get(0);
     }
 
     public Station getDestination() {
-        return destination;
+        return route.get(routeSize() - 1);
     }
 
     public Station currentStation() {
