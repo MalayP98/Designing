@@ -11,7 +11,7 @@ public class EngineMenu {
     private EngineService engineService;
 
     public EngineMenu() {
-        this.engineService = new EngineService();
+        this.engineService = EngineService.getInstance();
     }
 
     public Engine selectEngine() {

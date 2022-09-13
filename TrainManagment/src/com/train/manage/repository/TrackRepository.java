@@ -5,6 +5,18 @@ import com.train.manage.initiators.TrackInitiator;
 
 public class TrackRepository implements Repository<List<List<Integer>>> {
 
+    private static TrackRepository INSTANCE = null;
+
+    private TrackRepository() {
+    }
+
+    public static TrackRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TrackRepository();
+        }
+        return INSTANCE;
+    }
+
     @Override
     public boolean add(List<List<Integer>> object) {
         return false;

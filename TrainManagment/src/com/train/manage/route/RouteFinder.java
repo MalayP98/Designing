@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.train.manage.Station;
-import com.train.manage.repository.TrackRepository;
 import com.train.manage.service.TrackService;
 
 public class RouteFinder {
@@ -13,7 +12,7 @@ public class RouteFinder {
     private TrackService trackService;
 
     public RouteFinder() {
-        trackService = new TrackService(new TrackRepository());
+        trackService = TrackService.getInstance();
     }
 
     private void search(List<List<Integer>> tracks, int source, int destination,

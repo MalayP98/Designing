@@ -6,14 +6,27 @@ import com.train.manage.repository.TrackRepository;
 
 public class TrackService {
 
+    private static TrackService INSTANCE = null;
+
     private TrackRepository trackRepository;
 
-    public TrackService(TrackRepository trackRepository) {
+    private TrackService(TrackRepository trackRepository) {
         this.trackRepository = trackRepository;
     }
 
-    public Integer distace(Station A, Station B) {
-        return trackRepository.distance(A.getId() - 1, B.getId() - 1);
+    public static TrackService getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TrackService(TrackRepository.getInstance());
+        }
+        return INSTANCE;
+    }
+
+    public int distance(Station A, Station B) {
+        return distance(A.getId(), B.getId());
+    }
+
+    public int distance(int A, int B) {
+        return trackRepository.distance(A - 1, B - 1);
     }
 
     public List<List<Integer>> getTracks() {

@@ -8,6 +8,18 @@ public class StationRepository implements Repository<Station> {
 
     private final List<Station> stations = StationInitiator.getStations();
 
+    private static StationRepository INSTANCE = null;
+
+    private StationRepository() {
+    }
+
+    public static StationRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new StationRepository();
+        }
+        return INSTANCE;
+    }
+
     @Override
     public boolean add(Station object) {
         return false;

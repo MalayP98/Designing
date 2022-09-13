@@ -5,7 +5,7 @@ import com.train.manage.Station;
 
 public class Route {
 
-    private List<Station> route;
+    private final List<Station> route;
 
     private int currentStation = 0;
 
@@ -26,10 +26,13 @@ public class Route {
     }
 
     public Station nextStation() {
-        if (currentStation == routeSize()) {
-            return null;
-        }
-        return route.get(currentStation++);
+        Station nextStation = route.get(currentStation);
+        currentStation = (currentStation + 1) % routeSize();
+        return nextStation;
+    }
+
+    public List<Station> getRoute() {
+        return route;
     }
 
     public int routeSize() {

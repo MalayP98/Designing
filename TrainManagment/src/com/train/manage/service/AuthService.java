@@ -4,7 +4,19 @@ import static com.train.manage.Constants.SCANNER;
 
 public class AuthService {
 
+    private static AuthService INSTANCE = null;
+
     private final String ADMIN_PASSWORD = "admin";
+
+    private AuthService() {
+    }
+
+    public static AuthService getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AuthService();
+        }
+        return INSTANCE;
+    }
 
     public boolean login() {
         boolean isAdmin = false;
@@ -29,5 +41,4 @@ public class AuthService {
         System.out.println("Logged Out. Thank You.");
         return true;
     }
-
 }

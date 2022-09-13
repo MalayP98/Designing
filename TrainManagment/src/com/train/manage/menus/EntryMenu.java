@@ -11,7 +11,7 @@ public class EntryMenu {
         this.authService = authService;
     }
 
-    private boolean LOGGEDIN = false;
+    private static boolean LOGGEDIN = false;
 
     public boolean authenticate() {
         if (LOGGEDIN)
@@ -28,10 +28,10 @@ public class EntryMenu {
         }
         if (isAdmin) {
             System.out.println("You are now logged in as ADMIN.");
+            LOGGEDIN = true;
         } else {
             System.out.println("You are logged in as passenger.");
         }
-        LOGGEDIN = true;
         return isAdmin;
     }
 

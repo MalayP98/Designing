@@ -6,10 +6,19 @@ import com.train.manage.repository.StationRepository;
 
 public class StationService {
 
+    private static StationService INSTANCE = null;
+
     private StationRepository stationRepository;
 
-    public StationService(StationRepository stationRepository) {
+    private StationService(StationRepository stationRepository) {
         this.stationRepository = stationRepository;
+    }
+
+    public static StationService getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new StationService(StationRepository.getInstance());
+        }
+        return INSTANCE;
     }
 
     public List<Station> getAllStations() {
@@ -20,12 +29,5 @@ public class StationService {
         if (index >= getAllStations().size() || index < 0)
             return null;
         return getAllStations().get(index - 1);
-    }
-
-    public void listAllStation() {
-        int i = 1;
-        for (Station station : getAllStations()) {
-            System.out.println(i++ + ": " + station);
-        }
     }
 }

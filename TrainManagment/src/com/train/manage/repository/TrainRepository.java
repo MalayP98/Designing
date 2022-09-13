@@ -6,7 +6,19 @@ import com.train.manage.train.Train;
 
 public class TrainRepository implements Repository<Train> {
 
+    private static TrainRepository INSTANCE = null;
+
     private List<Train> trains = new ArrayList<>();
+
+    private TrainRepository() {
+    }
+
+    public static TrainRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TrainRepository();
+        }
+        return INSTANCE;
+    }
 
     @Override
     public boolean add(Train train) {

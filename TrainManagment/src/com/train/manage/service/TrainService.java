@@ -10,13 +10,27 @@ import com.train.manage.train.TrainDTO;
 
 public class TrainService {
 
+    private static TrainService INSTANCE = null;
+
     private StationService stationService;
 
     private TrainRepository trainRepository;
 
-    public TrainService(TrainRepository trainRepository, StationService stationService) {
+    private TrackService trackService;
+
+    private TrainService(TrainRepository trainRepository, StationService stationService,
+            TrackService trackService) {
         this.stationService = stationService;
         this.trainRepository = trainRepository;
+        this.trackService = trackService;
+    }
+
+    public static TrainService getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TrainService(TrainRepository.getInstance(), StationService.getInstance(),
+                    TrackService.getInstance());
+        }
+        return INSTANCE;
     }
 
     public List<Station> getRoute(List<Integer> routeStationId) {
@@ -29,7 +43,8 @@ public class TrainService {
 
     public Train addTrain(TrainDTO trainData) {
         Train train = new Train(trainData.getName(), new Route(getRoute(trainData.getRoute())),
-                trainData.getEngine());
+                trainData.getEngine(),
+                calculateTravelTime(trainData.getEngine().getMaxSpeed(), trainData.getRoute()));
         trainRepository.add(train);
         return train;
     }
@@ -37,8 +52,10 @@ public class TrainService {
     public Train updateTrain(TrainDTO trainData, Train train) {
         if (!trainData.getName().equals(""))
             train.setName(trainData.getName());
-        if (trainData.getRoute().size() < 2)
-            train.setRoute(new Route(getRoute(trainData.getRoute())));
+        train.setRoute(new Route(getRoute(trainData.getRoute())));
+        train.setEngine(trainData.getEngine());
+        train.setTravelTime(
+                calculateTravelTime(trainData.getEngine().getMaxSpeed(), trainData.getRoute()));
         return train;
     }
 
@@ -48,5 +65,40 @@ public class TrainService {
 
     public Train getTrain(Integer index) {
         return trainRepository.getAll().get(index - 1);
+    }
+
+    private List<Float> calculateTravelTime(int maxSpeed, List<Integer> route) {
+        List<Float> travelTime = new ArrayList<>();
+        for (int i = 0; i < route.size() - 1; i++) {
+            travelTime
+                    .add((float) trackService.distance(route.get(i), route.get(i + 1)) / maxSpeed);
+        }
+        return travelTime;
+    }
+
+    public List<Train> getAvailableTrains(int source, int destination) {
+        List<Train> availableTrains = new ArrayList<>();
+        List<Train> trains = trainRepository.getAll();
+        for (Train train : trains) {
+            if (isTrainAvailable(train.getRoute().getRoute(), source, destination)) {
+                availableTrains.add(train);
+            }
+        }
+        return availableTrains;
+    }
+
+    public boolean isTrainAvailable(List<Station> stations, int source, int destination) {
+        boolean sourceFound = false, destinationFound = false;
+        for (Station station : stations) {
+            if (station.getId() == source && !sourceFound) {
+                sourceFound = true;
+            }
+            if (station.getId() == destination && !destinationFound) {
+                destinationFound = true;
+            }
+            if (sourceFound && destinationFound)
+                return true;
+        }
+        return (sourceFound && destinationFound);
     }
 }

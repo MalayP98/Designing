@@ -7,10 +7,19 @@ import com.train.manage.repository.EngineRepository;
 
 public class EngineService {
 
+    private static EngineService INSTANCE = null;
+
     private EngineRepository engineRepository;
 
-    public EngineService() {
-        this.engineRepository = new EngineRepository();
+    private EngineService(EngineRepository engineRepository) {
+        this.engineRepository = engineRepository;
+    }
+
+    public static EngineService getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new EngineService(EngineRepository.getInstance());
+        }
+        return INSTANCE;
     }
 
     public Engine addEngine(EngineDTO engineDTO) {

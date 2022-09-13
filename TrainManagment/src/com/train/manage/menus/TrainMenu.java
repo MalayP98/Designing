@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import com.train.manage.engine.Engine;
 import com.train.manage.repository.StationRepository;
+import com.train.manage.repository.TrackRepository;
 import com.train.manage.repository.TrainRepository;
 import com.train.manage.route.RouteFinder;
 import com.train.manage.service.StationService;
+import com.train.manage.service.TrackService;
 import com.train.manage.service.TrainService;
 import com.train.manage.train.Train;
 import com.train.manage.train.TrainDTO;
@@ -23,8 +25,8 @@ public class TrainMenu {
     private EngineMenu engineMenu;
 
     public TrainMenu() {
-        this.stationService = new StationService(new StationRepository());
-        this.trainService = new TrainService(new TrainRepository(), this.stationService);
+        this.stationService = StationService.getInstance();
+        this.trainService = TrainService.getInstance();
         this.routeMenu = new RouteMenu(this.stationService, new RouteFinder());
         this.engineMenu = new EngineMenu();
     }

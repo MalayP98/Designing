@@ -1,6 +1,7 @@
 package com.train.manage.menus;
 
 import static com.train.manage.Constants.SCANNER;
+import com.train.manage.service.AuthService;
 
 public class AdminMenu {
 
@@ -8,9 +9,12 @@ public class AdminMenu {
 
     private EngineMenu engineMenu;
 
+    private EntryMenu entryMenu;
+
     public AdminMenu(TrainMenu trainMenu, EngineMenu engineMenu) {
         this.trainMenu = trainMenu;
         this.engineMenu = engineMenu;
+        this.entryMenu = new EntryMenu(AuthService.getInstance());
     }
 
     public void displayMenu() {
@@ -20,8 +24,10 @@ public class AdminMenu {
             System.out.println(
                     "1: Add Train\n2: Update a train.\n3: List trains.\n4: Add engine.\n5: List engines.\n-1: Log Out");
             option = SCANNER.nextInt();
-            if (option == -1)
-                break;
+            if (option == -1) {
+                entryMenu.authenticate();
+                return;
+            }
             delatgate(option);
         }
     }
@@ -36,6 +42,7 @@ public class AdminMenu {
                 break;
             case 3:
                 trainMenu.listAllTrain();
+                break;
             case 4:
                 engineMenu.addEngine();
                 break;

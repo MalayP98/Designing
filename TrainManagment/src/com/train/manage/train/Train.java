@@ -1,5 +1,6 @@
 package com.train.manage.train;
 
+import java.util.Arrays;
 import java.util.List;
 import com.train.manage.Station;
 import com.train.manage.Util;
@@ -18,15 +19,12 @@ public class Train {
 
     private Engine engine;
 
-    public Train(String name, Route route, Engine engine) {
+    public Train(String name, Route route, Engine engine, List<Float> travelTime) {
         this.trainNumber = Util.getRandomNumber(1, 9999);
         this.name = name;
         this.route = route;
         this.engine = engine;
-    }
-
-    private void calculateTravelTime() {
-
+        this.travelTime = travelTime;
     }
 
     public int getTrainNumber() {
@@ -35,6 +33,14 @@ public class Train {
 
     public String getName() {
         return name;
+    }
+
+    public List<Float> getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(List<Float> travelTime) {
+        this.travelTime = travelTime;
     }
 
     public Station nextStation() {
@@ -64,6 +70,11 @@ public class Train {
     @Override
     public String toString() {
         return "{train_number = " + trainNumber + ", name = " + name + ", source = "
-                + route.getSource() + ", destination = " + route.getDestination() + "}";
+                + route.getSource() + ", destination = " + route.getDestination()
+                + ", travel time = " + Arrays.toString(travelTime.toArray()) + "}";
+    }
+
+    public Route getRoute() {
+        return route;
     }
 }

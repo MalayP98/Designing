@@ -6,8 +6,8 @@ import com.train.manage.initiators.TrackInitiator;
 import com.train.manage.menus.AdminMenu;
 import com.train.manage.menus.EngineMenu;
 import com.train.manage.menus.EntryMenu;
+import com.train.manage.menus.PassengerMenu;
 import com.train.manage.menus.TrainMenu;
-import com.train.manage.repository.EngineRepository;
 import com.train.manage.service.AuthService;
 import com.train.manage.service.EngineService;
 
@@ -19,14 +19,17 @@ public class Environment {
 
     private EngineService engineService;
 
+    private PassengerMenu passengerMenu;
+
     private static Environment INSTANCE = null;
 
     private static boolean created = false;
 
     private Environment() {
-        this.entryMenu = new EntryMenu(new AuthService());
+        this.entryMenu = new EntryMenu(AuthService.getInstance());
         this.adminMenu = new AdminMenu(new TrainMenu(), new EngineMenu());
-        this.engineService = new EngineService();
+        this.engineService = EngineService.getInstance();
+        this.passengerMenu = new PassengerMenu();
     }
 
     public static Environment getInstance() {
@@ -57,6 +60,8 @@ public class Environment {
                 return;
             if (entryMenu.authenticate()) {
                 adminMenu.displayMenu();
+            } else {
+                passengerMenu.bookTicket();
             }
         }
     }

@@ -8,6 +8,8 @@ import com.train.manage.service.StationService;
 
 public class RouteMenu {
 
+    private StationMenu stationMenu;
+
     private StationService stationService;
 
     private RouteFinder finder;
@@ -15,12 +17,13 @@ public class RouteMenu {
     public RouteMenu(StationService stationService, RouteFinder finder) {
         this.stationService = stationService;
         this.finder = finder;
+        this.stationMenu = new StationMenu(this.stationService);
     }
 
     public List<Integer> findRoute() {
         System.out.println("Decide route for train:");
         int source = -1, destination = -1;
-        stationService.listAllStation();
+        stationMenu.listAllStations();
         List<List<Integer>> routes = new ArrayList<>();
         do {
             System.out.println("Select source: ");

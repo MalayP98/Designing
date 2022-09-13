@@ -6,7 +6,19 @@ import com.train.manage.engine.Engine;
 
 public class EngineRepository implements Repository<Engine> {
 
-    public static final List<Engine> ENGINES = new ArrayList<>();
+    private static EngineRepository INSTANCE = null;
+
+    private static final List<Engine> ENGINES = new ArrayList<>();
+
+    private EngineRepository() {
+    }
+
+    public static EngineRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new EngineRepository();
+        }
+        return INSTANCE;
+    }
 
     @Override
     public boolean add(Engine engine) {
