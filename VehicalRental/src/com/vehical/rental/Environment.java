@@ -34,7 +34,7 @@ public class Environment {
         this.billMenu = billMenu;
     }
 
-    public void createEnvironment() throws Exception {
+    public void createEnvironment() {
         try {
             vehicalPopulator.populateVehicals(RandomElementGenerators.getRandomInt(10));
             System.out.println("Environment created!");
@@ -48,22 +48,23 @@ public class Environment {
         User user = appEntry.enter();
         if (Objects.isNull(user))
             return;
-        System.out.println("1: Rent\n2: Return\n3: Show bills\n-1: EXIT");
-        option = SCANNER.nextInt();
-        switch (option) {
-            case -1:
-                start();
-                break;
-            case 1:
-                vehicalRentMenu.rentVehical(user);
-                break;
-            case 2:
-                vehicalReturnMenu.returnVehical(user);
-                break;
-            case 3:
-                billMenu.viewBillMenu(user);
-                break;
+        while (true) {
+            System.out.println("1: Rent\n2: Return\n3: Show bills\n-1: EXIT");
+            option = SCANNER.nextInt();
+            switch (option) {
+                case -1:
+                    start();
+                    return;
+                case 1:
+                    vehicalRentMenu.rentVehical(user);
+                    break;
+                case 2:
+                    vehicalReturnMenu.returnVehical(user);
+                    break;
+                case 3:
+                    billMenu.viewBillMenu(user);
+                    break;
+            }
         }
-        start();
     }
 }

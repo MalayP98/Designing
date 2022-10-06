@@ -1,16 +1,22 @@
 package com.vehical.rental.menus;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import com.vehical.rental.RentManager;
 import com.vehical.rental.booking.Booking;
+import com.vehical.rental.rentmanager.RentManagerImpl;
 import com.vehical.rental.user.User;
+import com.vehical.rental.user.UserService;
 import com.vehical.rental.vehicaldetails.VehicalInventory;
 
 public class VehicalReturnMenu extends VehicalOptionsMenu {
 
-    public VehicalReturnMenu(VehicalInventory vehicalInventory, RentManager rentManager) {
+    private UserService userService;
+
+    public VehicalReturnMenu(VehicalInventory vehicalInventory, RentManagerImpl rentManager,
+            UserService userService) {
         super(vehicalInventory, rentManager);
+        this.userService = userService;
     }
 
     public void returnVehical(User user) {
@@ -25,13 +31,14 @@ public class VehicalReturnMenu extends VehicalOptionsMenu {
         if (bookingIndex >= bookedVehicalNumbers.size())
             returnVehical(user);
         rentManager.returnVehical(user,
-                vehicalInventory.getVehicalByVehicalNumber(bookedVehicalNumbers.get(bookingIndex)));
+                vehicalInventory.getVehicalByVehicalNumber(bookedVehicalNumbers.get(bookingIndex)),
+                new Date());
     }
 
     private List<String> getBookedVehicals(User user) {
-        List<Booking> bookings = user.bookings();
+        List<Booking> activeBookings = userService.getActiveBooking(user);
         List<String> bookedVehicalNumbers = new ArrayList<>();
-        for (Booking booking : bookings)
+        for (Booking booking : activeBookings)
             bookedVehicalNumbers.add(booking.getVehicalNumber());
         return bookedVehicalNumbers;
     }
@@ -40,7 +47,7 @@ public class VehicalReturnMenu extends VehicalOptionsMenu {
         List<String> bookedVehicalNumbers = getBookedVehicals(user);
         int i = 1;
         for (String bookedVehicalNumber : bookedVehicalNumbers)
-            System.err.println(
-                    i + ": " + vehicalInventory.getVehicalByVehicalNumber(bookedVehicalNumber));
+            System.out.println(
+                    i++ + ": " + vehicalInventory.getVehicalByVehicalNumber(bookedVehicalNumber));
     }
 }

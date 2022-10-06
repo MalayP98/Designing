@@ -1,7 +1,6 @@
 package com.vehical.rental.vehicaldetails;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,5 +69,25 @@ public class VehicalInventory {
 
     public List<Vehical> getAllCars() {
         return vehicalsByType.get(VehicalType.FOUR_WHEELER);
+    }
+
+    public List<Vehical> getAllAvailableBikes() {
+        List<Vehical> bikes = getAllBikes();
+        List<Vehical> availableBikes = new ArrayList<>();
+        for (Vehical bike : bikes) {
+            if (bike.isActive())
+                availableBikes.add(bike);
+        }
+        return availableBikes;
+    }
+
+    public List<Vehical> getAllAvailableCar() {
+        List<Vehical> cars = getAllCars();
+        List<Vehical> availableCars = new ArrayList<>();
+        for (Vehical car : cars) {
+            if (car.isActive())
+                availableCars.add(car);
+        }
+        return availableCars;
     }
 }

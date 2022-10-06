@@ -1,7 +1,7 @@
 package com.vehical.rental.menus;
 
 import java.util.Scanner;
-import com.vehical.rental.RentManager;
+import com.vehical.rental.rentmanager.RentManagerImpl;
 import com.vehical.rental.vehicaldetails.VehicalInventory;
 
 public abstract class VehicalOptionsMenu {
@@ -10,9 +10,9 @@ public abstract class VehicalOptionsMenu {
 
     protected VehicalInventory vehicalInventory;
 
-    protected RentManager rentManager;
+    protected RentManagerImpl rentManager;
 
-    public VehicalOptionsMenu(VehicalInventory vehicalInventory, RentManager rentManager) {
+    public VehicalOptionsMenu(VehicalInventory vehicalInventory, RentManagerImpl rentManager) {
         this.vehicalInventory = vehicalInventory;
         this.rentManager = rentManager;
     }

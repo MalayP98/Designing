@@ -15,7 +15,7 @@ public class Bill {
     private Double finalAmount;
 
     public Bill(Booking booking, Date returnDate, Double finalAmount) {
-        this.orderId = UUID.randomUUID().toString().substring(0, 10);
+        this.orderId = UUID.randomUUID().toString().substring(0, 10).replace("-", "");
         this.booking = booking;
         this.returnDate = returnDate;
         this.finalAmount = finalAmount;
@@ -43,8 +43,8 @@ public class Bill {
         builder.append("******************* BILL ********************\n");
         builder.append("Order ID: " + orderId + "\n");
         builder.append("Vehical rented: " + booking.getVehicalNumber() + "\n");
-        builder.append("Rented from " + booking.getRentDate().toString() + " till "
-                + booking.getReturnDate().toString() + "\n");
+        builder.append("Rented from " + booking.getRentDate().toString() + "\n");
+        builder.append("Rented till: " + booking.getReturnDate().toString() + "\n");
         builder.append("Actual return date: " + returnDate.toString() + "\n");
         builder.append("Final amount: " + finalAmount + "\n");
         builder.append("*********************************************\n");

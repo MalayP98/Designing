@@ -1,4 +1,4 @@
-package com.vehical.rental;
+package com.vehical.rental.rentmanager;
 
 import java.util.Date;
 import java.util.List;
@@ -9,8 +9,9 @@ import com.vehical.rental.booking.BookingStatus;
 import com.vehical.rental.user.User;
 import com.vehical.rental.vehicaldetails.Vehical;
 
-public class RentManager {
+public class RentManagerImpl implements RentManager {
 
+    @Override
     public boolean rentVehical(User user, Vehical vehical, Date from, Date till) {
         if (Objects.nonNull(user) && Objects.nonNull(vehical) && from.compareTo(new Date()) >= 0
                 && till.compareTo(from) >= 0) {
@@ -22,11 +23,15 @@ public class RentManager {
         return false;
     }
 
-    public boolean returnVehical(User user, Vehical vehical) {
+    @Override
+    public boolean returnVehical(User user, Vehical vehical, Date returnDate) {
         Booking returnVehicalBooking = getBookingForVehical(user.bookings(), vehical);
         if (Objects.nonNull(returnVehicalBooking)) {
-            returnVehicalBooking.setResvationStatus(BookingStatus.COMPLETE);
-            user.returnVehical(BillCalculator.caclculate(returnVehicalBooking, new Date()));
+            if (returnVehicalBooking.isInprogress())
+                returnVehicalBooking.setResvationStatus(BookingStatus.COMPLETE);
+            else if (returnVehicalBooking.isScheduled())
+                returnVehicalBooking.setResvationStatus(BookingStatus.CANCLE);
+            user.returnVehical(BillCalculator.caclculate(returnVehicalBooking, returnDate));
             vehical.toggleStatus();
             return true;
         }

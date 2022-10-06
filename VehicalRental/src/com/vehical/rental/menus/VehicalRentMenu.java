@@ -2,7 +2,8 @@ package com.vehical.rental.menus;
 
 import java.util.Date;
 import java.util.List;
-import com.vehical.rental.RentManager;
+import java.util.Objects;
+import com.vehical.rental.rentmanager.RentManagerImpl;
 import com.vehical.rental.user.User;
 import com.vehical.rental.vehicaldetails.Vehical;
 import com.vehical.rental.vehicaldetails.VehicalInventory;
@@ -10,7 +11,7 @@ import com.vehical.rental.vehicaldetails.VehicalType;
 
 public class VehicalRentMenu extends VehicalOptionsMenu {
 
-    public VehicalRentMenu(VehicalInventory vehicalInventory, RentManager rentManager) {
+    public VehicalRentMenu(VehicalInventory vehicalInventory, RentManagerImpl rentManager) {
         super(vehicalInventory, rentManager);
     }
 
@@ -31,13 +32,15 @@ public class VehicalRentMenu extends VehicalOptionsMenu {
             default:
                 rentVehical(user);
         }
-        rentManager.rentVehical(user, selectedVehical, new Date(), new Date());
-        System.out.println("Vehical rented!");
+        if (Objects.nonNull(selectedVehical)) {
+            rentManager.rentVehical(user, selectedVehical, new Date(), new Date());
+            System.out.println("Vehical rented!");
+        }
         return;
     }
 
     private Vehical selectVehical(VehicalType type) {
-        System.out.println("Select vehical you would like to rent: ");
+        System.out.println("Select vehical you would like to rent(-1 to EXIT): ");
         listVehical(type);
         int vehicalIndex = SCANNER.nextInt();
         if (vehicalIndex == -1) {
@@ -54,12 +57,15 @@ public class VehicalRentMenu extends VehicalOptionsMenu {
     }
 
     private List<Vehical> getVehicalList(VehicalType type) {
-        return (type.equals(VehicalType.TWO_WHEELER)) ? vehicalInventory.getAllBikes()
-                : vehicalInventory.getAllCars();
+        return (type.equals(VehicalType.TWO_WHEELER)) ? vehicalInventory.getAllAvailableBikes()
+                : vehicalInventory.getAllAvailableCar();
     }
 
     private void listVehical(VehicalType type) {
         List<Vehical> vehicals = getVehicalList(type);
+        if (vehicals.size() == 0) {
+            System.out.println("Sorry, no vehical available right now.");
+        }
         for (int i = 1; i <= vehicals.size(); i++) {
             System.out.println(i + ": " + vehicals.get(i - 1));
         }
