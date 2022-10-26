@@ -8,8 +8,8 @@ public class Post extends BaseTweet {
 
     private List<CommentThread> commentThreads = new ArrayList<>();
 
-    public Post(Long id, String content) {
-        super(id, content);
+    public Post(Long id, String content, Long ownerId) {
+        super(id, content, ownerId);
     }
 
     public CommentThread addCommentThread(Comment comment) {

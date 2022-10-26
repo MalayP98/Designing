@@ -2,17 +2,20 @@ package com.twitter;
 
 import java.util.Set;
 
-public class BaseTweet {
+public abstract class BaseTweet {
 
     private Long id;
 
     private String content;
 
+    private Long ownerId;
+
     private Set<Long> likedByUsers;
 
-    public BaseTweet(Long id, String content) {
+    public BaseTweet(Long id, String content, Long ownerId) {
         this.id = id;
         this.content = content;
+        this.ownerId = ownerId;
     }
 
     public Long getId() {
@@ -33,5 +36,9 @@ public class BaseTweet {
 
     public void dislike(Long userId) {
         likedByUsers.remove(userId);
+    }
+
+    public Long getOwner() {
+        return ownerId;
     }
 }

@@ -36,6 +36,8 @@ public class TwitterLLD {
 
         // 3. Make users tweet.
         Post addedPost = tweetService.addPost(users.get(1), "Hello, from User-1");
+
+        // Add comment
         CommentThread newCommentThread =
                 tweetService.addNewComment(addedPost, "Hi there.", users.get(0));
         tweetService.addCommentToThread(addedPost, "Welcome to Twitter!", users.get(3),
@@ -43,12 +45,29 @@ public class TwitterLLD {
         tweetService.addCommentToThread(addedPost, "Hello from user-4", users.get(4),
                 newCommentThread.getId());
 
-        CommentThread newCommentThread2 =
-                tweetService.addNewComment(addedPost, "Hi there.", users.get(0));
+        // Add comment
+        newCommentThread = tweetService.addNewComment(addedPost, "Hi there.", users.get(0));
         tweetService.addCommentToThread(addedPost, "Welcome to Twitter!", users.get(3),
-                newCommentThread2.getId());
+                newCommentThread.getId());
         tweetService.addCommentToThread(addedPost, "Hello from user-4", users.get(4),
-                newCommentThread2.getId());
+                newCommentThread.getId());
+
+        // Make user tweet
+        addedPost = tweetService.addPost(users.get(1), "Here is a new tweet.");
+
+        // Add comment
+        newCommentThread = tweetService.addNewComment(addedPost, "Nice", users.get(0));
+        tweetService.addCommentToThread(addedPost, "Well done.", users.get(3),
+                newCommentThread.getId());
+        tweetService.addCommentToThread(addedPost, "Good one.", users.get(4),
+                newCommentThread.getId());
+
+        // Add comment
+        newCommentThread = tweetService.addNewComment(addedPost, "Nice", users.get(0));
+        tweetService.addCommentToThread(addedPost, "Well done.", users.get(3),
+                newCommentThread.getId());
+        tweetService.addCommentToThread(addedPost, "Good one.", users.get(4),
+                newCommentThread.getId());
 
         // 4 Disply User-1 wall.
         System.out.println(users.get(0).getWall());
